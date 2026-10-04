@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#070913">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Neon Snake | Ultimate Cyber Edition</title>
+    <!-- Google Fonts for Modern Tech/Gaming Aesthetics -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Background Animated Video & Cinematic Overlay -->
+    <div class="video-container">
+        <video id="bg-video" autoplay loop muted playsinline webkit-playsinline>
+            <source src="snake.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+        <div class="scanline-overlay"></div>
+    </div>
+
+    <!-- Main Game Wrapper -->
+    <main class="game-container">
+        <!-- Header / HUD Section -->
+        <header class="game-header">
+            <div class="brand">
+                <span class="brand-icon">🐍</span>
+                <h1 class="brand-title">CYBER<span class="highlight">SNAKE</span></h1>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="infos">
+                <div class="info-card">
+                    <span class="info-icon">👑</span>
+                    <div class="info-details">
+                        <span class="info-label">BEST</span>
+                        <span id="high-score" class="info-val">0</span>
+                    </div>
+                </div>
+
+                <div class="info-card primary">
+                    <span class="info-icon">⚡</span>
+                    <div class="info-details">
+                        <span class="info-label">SCORE</span>
+                        <span id="score" class="info-val">0</span>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <span class="info-icon">⏱️</span>
+                    <div class="info-details">
+                        <span class="info-label">TIME</span>
+                        <span id="Time" class="info-val">00:00</span>
+                    </div>
+                </div>
+
+                <div class="info-card level-card">
+                    <span class="info-icon">🚀</span>
+                    <div class="info-details">
+                        <span class="info-label">SPEED</span>
+                        <span id="speed-indicator" class="info-val">1.0x</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HUD Action Controls -->
+            <div class="hud-actions">
+                <button id="btn-pause" class="icon-btn" title="Pause Game (Space)" aria-label="Pause Game">
+                    <span id="pause-icon">⏸️</span>
+                </button>
+                <button id="btn-sound" class="icon-btn" title="Toggle Sound (M)" aria-label="Toggle Sound">
+                    <span id="sound-icon">🔊</span>
+                </button>
+                <button id="btn-video-dim" class="icon-btn" title="Toggle Background Dimming" aria-label="Toggle Dim">
+                    <span>🎬</span>
+                </button>
+                <button id="btn-dpad-toggle" class="icon-btn" title="Toggle On-screen D-Pad" aria-label="Toggle D-Pad">
+                    <span>🎮</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Board Game Section -->
+        <section class="board-wrapper">
+            <div class="board-frame">
+                <div class="board"></div>
+
+                <!-- Pause Banner Overlay -->
+                <div id="pause-banner" class="pause-banner hidden">
+                    <div class="pause-content">
+                        <span class="pause-icon">⏸️</span>
+                        <h2>GAME PAUSED</h2>
+                        <p class="desktop-pause-hint">Press <kbd>Space</kbd> or click Resume</p>
+                        <p class="mobile-pause-hint">Tap Resume to continue</p>
+                        <button id="btn-resume" class="btn btn-secondary">Resume Game</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Keyboard Hint Bar -->
+            <div class="desktop-hints">
+                <span class="hint-item"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> Move</span>
+                <span class="hint-item"><kbd>Space</kbd> Pause</span>
+                <span class="hint-item"><kbd>M</kbd> Audio</span>
+            </div>
+        </section>
+
+        <!-- Mobile / Touch On-Screen Controls -->
+        <div class="touch-controls" id="touch-controls">
+            <button class="dpad-btn up" data-dir="up" aria-label="Up">▲</button>
+            <div class="dpad-middle">
+                <button class="dpad-btn left" data-dir="left" aria-label="Left">◀</button>
+                <button class="dpad-btn center-action" id="dpad-pause" aria-label="Pause">⏸</button>
+                <button class="dpad-btn right" data-dir="right" aria-label="Right">▶</button>
+            </div>
+            <button class="dpad-btn down" data-dir="down" aria-label="Down">▼</button>
+        </div>
+
+        <!-- Modals: Start Game and Game Over -->
+        <div class="modal">
+            <!-- Start Game Modal -->
+            <div class="modal-card start-game">
+                <div class="modal-badge">NEON ARCADE</div>
+                <h2 class="modal-title">CYBER SNAKE</h2>
+                <p class="modal-subtitle">Control the cyber serpent, consume data energy, and survive the digital grid.</p>
+
+                <!-- Difficulty Select -->
+                <div class="difficulty-picker">
+                    <label>DIFFICULTY</label>
+                    <div class="difficulty-buttons">
+                        <button type="button" class="diff-btn" data-speed="180">CASUAL</button>
+                        <button type="button" class="diff-btn active" data-speed="120">NORMAL</button>
+                        <button type="button" class="diff-btn" data-speed="75">EXPERT</button>
+                    </div>
+                </div>
+
+                <div class="controls-guide">
+                    <div class="control-key desktop-only">
+                        <div class="key-badges">
+                            <span class="key-badge">W A S D</span> <span class="key-divider">/</span> <span class="key-badge">↑ ← ↓ →</span>
+                        </div>
+                        <span class="key-label">Navigate</span>
+                    </div>
+                    <div class="control-key mobile-only">
+                        <span class="key-badge">👆 Swipe / D-Pad</span>
+                        <span class="key-label">Navigate</span>
+                    </div>
+                    <div class="control-key">
+                        <span class="key-badge">Space / ⏸</span>
+                        <span class="key-label">Pause</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-start">
+                    <span>INITIALIZE GAME</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </div>
+
+            <!-- Game Over Modal -->
+            <div class="modal-card game-over">
+                <div class="modal-badge game-over-badge">MISSION FAILED</div>
+                <h2 class="modal-title game-over-title">GAME OVER</h2>
+                <div id="new-high-badge" class="new-high-banner hidden">🏆 NEW HIGH RECORD! 🏆</div>
+
+                <div class="stats-summary">
+                    <div class="stat-box">
+                        <span class="stat-title">FINAL SCORE</span>
+                        <span id="final-score" class="stat-number">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">ALL-TIME BEST</span>
+                        <span id="final-best" class="stat-number">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">TIME ALIVE</span>
+                        <span id="final-time" class="stat-number">00:00</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-title">LENGTH</span>
+                        <span id="final-length" class="stat-number">3</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-restart">
+                    <span>PLAY AGAIN</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
